@@ -38,9 +38,8 @@ CUSTOM_APPS = [
     # "apps.converter",
     # "apps.fintech_app",
     # "apps.profiles",
-    # "apps.transactions",
-    # "apps.wallet",
     "apps.user",
+    "apps.invoice",
 ]
 
 
@@ -48,6 +47,7 @@ THIRDPARTY_APPS = [
     # "anymail",
     "django_celery_results",
     "phonenumber_field",
+    "rest_framework",
     # 'django_countries',
     # 'django_extensions',
     # 'cloudinary_storage',
