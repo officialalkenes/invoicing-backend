@@ -35,7 +35,7 @@ DJANGO_APPS = [
 
 CUSTOM_APPS = [
     # "apps.chats",
-    # "apps.converter",
+    "apps.customers",
     # "apps.fintech_app",
     # "apps.profiles",
     "apps.invoice",
