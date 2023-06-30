@@ -49,6 +49,7 @@ THIRDPARTY_APPS = [
     "django_celery_results",
     "phonenumber_field",
     "rest_framework",
+    "rest_framework_simplejwt.token_blacklist",
     # 'django_countries',
     # 'django_extensions',
     # 'cloudinary_storage',
@@ -158,4 +159,17 @@ CACHES = {
         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
         "LOCATION": "my_cache_table",
     }
+}
+
+
+# RESTFRAMEWORK CONFIG
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ],
 }
