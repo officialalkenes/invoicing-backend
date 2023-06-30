@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 from django_countries.fields import CountryField
 
-from apps.profiles.utils import generate_unique_id
+from apps.profiles.utils import generate_unique_id, user_directory_path
 
 from .constants import BUSINESS_TYPE, CURRENCY_CHOICE, INDUSTRY_TYPE
 
@@ -24,6 +24,9 @@ class UserProfile(models.Model):
     location = CountryField()
     state = models.CharField(
         max_length=100, verbose_name=_("State/Province"), blank=True
+    )
+    logo = models.ImageField(
+        upload_to=user_directory_path, blank=True, verbose_name=_("Organization Logo")
     )
     city = models.CharField(max_length=100, verbose_name=_("City"), blank=True)
     address = models.CharField(
@@ -43,7 +46,6 @@ class OrganizationProfile(models.Model):
     organization = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     industry = models.CharField(max_length=100, choices=INDUSTRY_TYPE)
     business = models.CharField(max_length=100, choices=BUSINESS_TYPE)
-    logo = models.ImageField(upload_to="")
     base_currency = models.CharField(max_length=30, choices=CURRENCY_CHOICE, blank=True)
 
     def __str__(self) -> str:
