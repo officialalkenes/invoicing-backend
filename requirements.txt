@@ -19,6 +19,7 @@ attrs==23.1.0
     # via
     #   -r requirements.in
     #   automat
+    #   jsonschema
     #   service-identity
     #   twisted
 autobahn==23.6.1
@@ -171,11 +172,15 @@ incremental==22.10.0
     # via
     #   -r requirements.in
     #   twisted
+inflection==0.5.1
+    # via -r requirements.in
 iniconfig==2.0.0
     # via
     #   -r requirements.in
     #   pytest
 jsonfield==2.1.1
+    # via -r requirements.in
+jsonschema==4.17.3
     # via -r requirements.in
 kombu==5.3.0
     # via
@@ -245,6 +250,10 @@ pyproject-hooks==1.0.0
     # via
     #   -r requirements.in
     #   build
+pyrsistent==0.19.3
+    # via
+    #   -r requirements.in
+    #   jsonschema
 pytest==7.3.1
     # via
     #   -r requirements.in
@@ -350,6 +359,8 @@ tzdata==2023.3
     #   -r requirements.in
     #   celery
     #   django
+uritemplate==4.1.1
+    # via -r requirements.in
 urllib3==2.0.3
     # via
     #   -r requirements.in

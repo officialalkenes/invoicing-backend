@@ -12,4 +12,6 @@ urlpatterns = [
         TokenRefreshView.as_view(),
         name="token_obtain_refresh_view",
     ),
+    path("api/v1/auth/", include("djoser.urls")),
+    path("api/v1/auth/", include("djoser.urls.authtoken")),
 ]
