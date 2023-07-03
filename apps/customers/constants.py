@@ -19,3 +19,15 @@ SALUTATION_TYPE = (
     (MS, "Ms."),
     (DR, "Dr."),
 )
+
+
+EUR = "Eur"
+NGN = "NGN"
+USD = "USD"
+
+
+CURRENCY_TYPE = (
+    (EUR, "EUR"),
+    (NGN, "NGN"),
+    (USD, "USD"),
+)

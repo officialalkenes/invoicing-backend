@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from django_countries.fields import CountryField
 
-from .constants import CUSTOMER_TYPE, SALUTATION_TYPE
+from .constants import CURRENCY_TYPE, CUSTOMER_TYPE, SALUTATION_TYPE
 
 
 class Customer(models.Model):
@@ -17,7 +17,9 @@ class Customer(models.Model):
     salutation = models.CharField(max_length=20, choices=SALUTATION_TYPE)
     company_name = models.CharField(max_length=100, verbose_name=_("Company Name"))
     display_name = models.CharField(max_length=100, verbose_name=_("Display Name"))
-    currency = models.CharField(max_length=100, verbose_name=_("Currency"))
+    currency = models.CharField(
+        max_length=100, verbose_name=_("Currency"), choices=CURRENCY_TYPE
+    )
     email = models.EmailField()
     personal_phone = models.CharField(max_length=11, verbose_name=_("Personal Phone"))
     work_phone = models.CharField(max_length=11, verbose_name=_("Work Phone"))
