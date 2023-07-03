@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
 from apps.customers.models import Customer
-from apps.invoice.constants import FREQUENCY_CHOICES, INVOICE_TYPE
+from apps.invoice.constants import BILLING_METHOD, FREQUENCY_CHOICES, INVOICE_TYPE
 
 from .utils import generate_unique_account_number
 
@@ -85,3 +85,61 @@ class Recurring(models.Model):
 
     def __str__(self) -> str:
         return f"{self.invoice.number}"
+
+
+class Project(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    project_name = models.CharField(max_length=100, verbose_name=_("Project Name"))
+    project_code = models.CharField(max_length=100, verbose_name=_("Project Code"))
+    description = models.TextField()
+    billing_method = models.CharField(
+        max_length=100, verbose_name=_("Billing Method"), choices=BILLING_METHOD
+    )
+    total_cost = models.DecimalField(decimal_places=2, max_digits=12)
+
+    def __str__(self) -> str:
+        return f"{self.project_name}"
+
+
+class ProjectTask(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    task_name = models.CharField(max_length=100, verbose_name=_("Task Name"))
+    description = models.TextField()
+
+    def __str__(self) -> str:
+        return f"{self.task_name}"
+
+
+class Quote(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    client = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    quote_id = models.CharField(max_length=20, blank=True)
+    subject = models.CharField(max_length=100, verbose_name=_("Subject"))
+    quote_date = models.DateField(verbose_name=_("Due Date"))
+    expiration_date = models.DateField(verbose_name=_("Due Date"))
+    project_name = models.ForeignKey(Project, on_delete=models.CASCADE)
+    subject = models.CharField(max_length=200, blank=True)
+    status = models.CharField(
+        max_length=20,
+        choices=(
+            ("draft", "Draft"),
+            ("sent", "Sent"),
+            ("paid", "Paid"),
+            ("cancelled", "Cancelled"),
+        ),
+    )
+    payment_due_date = models.DateField(null=True, blank=True)
+    # ... other invoice fields
+    terms = models.TextField(blank=True)
+
+    class Meta:
+        verbose_name = "Invoice"
+        verbose_name_plural = "Invoices"
+
+    def __str__(self):
+        return self.number
+
+    def save(self, *args, **kwargs):
+        if not self.number:
+            self.number = generate_unique_account_number()
+        return super().save(self, args, kwargs)
