@@ -1,5 +1,8 @@
-from django.db import models
 from django.contrib.auth import get_user_model
+
+from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 from django.utils.translation import gettext_lazy as _
 
@@ -12,11 +15,16 @@ User = get_user_model()
 
 
 class Invoice(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    client = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    number = models.CharField(max_length=20, blank=True)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="user_invoice"
+    )
+    client = models.ForeignKey(
+        Customer, on_delete=models.CASCADE, related_name="client_invoice"
+    )
+    inv_number = models.CharField(max_length=20, blank=True)
+    invoice_date = models.DateField(verbose_name=_("Invoice Date"))
     subject = models.CharField(max_length=100, verbose_name=_("Subject"))
-    due_date = models.DateField(verbose_name=_("Due Date"))
+    due_date = models.DateField(verbose_name=_("Due Date"), blank=True, null=True)
     invoice_type = models.CharField(
         max_length=20, verbose_name=_("Invoice Type"), choices=INVOICE_TYPE
     )
@@ -29,26 +37,40 @@ class Invoice(models.Model):
             ("paid", "Paid"),
             ("cancelled", "Cancelled"),
         ),
+        blank=True,
     )
-    payment_due_date = models.DateField(null=True, blank=True)
     # ... other invoice fields
     terms = models.TextField(blank=True)
+    has_paid = models.BooleanField(default=False)
+    is_sent = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = "Invoice"
         verbose_name_plural = "Invoices"
 
     def __str__(self):
-        return self.number
+        return self.inv_number
 
     def save(self, *args, **kwargs):
-        if not self.number:
-            self.number = generate_unique_account_number()
+        if not self.inv_number:
+            self.inv_number = generate_unique_account_number()
         return super().save(self, args, kwargs)
 
 
+@receiver(post_save, sender=Invoice)
+def user_post_save(sender, instance, created, **kwargs):
+    if instance.has_paid:
+        instance.status = "paid"
+        instance.save()
+    elif instance.is_sent and not instance.has_paid:
+        instance.status = "sent"
+        instance.save()
+
+
 class InvoiceItem(models.Model):
-    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, related_name="items")
+    invoice = models.ForeignKey(
+        Invoice, on_delete=models.CASCADE, related_name="item_invoice"
+    )
     description = models.CharField(max_length=200)
     quantity = models.PositiveIntegerField()
     unit_price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -76,9 +98,12 @@ class InvoiceItem(models.Model):
 
 
 class Recurring(models.Model):
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    invoice = models.ForeignKey("Invoice", on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name=_("user_recurring")
+    )
+    invoice = models.ForeignKey(
+        "Invoice", on_delete=models.CASCADE, related_name=_("invoice_recurring")
+    )
     frequency = models.CharField(max_length=2, choices=FREQUENCY_CHOICES)
     start_date = models.DateField()
     end_date = models.DateField()
@@ -102,7 +127,7 @@ class Project(models.Model):
 
 
 class ProjectTask(models.Model):
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ManyToManyField(Project)
     task_name = models.CharField(max_length=100, verbose_name=_("Task Name"))
     description = models.TextField()
 
@@ -119,27 +144,5 @@ class Quote(models.Model):
     expiration_date = models.DateField(verbose_name=_("Due Date"))
     project_name = models.ForeignKey(Project, on_delete=models.CASCADE)
     subject = models.CharField(max_length=200, blank=True)
-    status = models.CharField(
-        max_length=20,
-        choices=(
-            ("draft", "Draft"),
-            ("sent", "Sent"),
-            ("paid", "Paid"),
-            ("cancelled", "Cancelled"),
-        ),
-    )
-    payment_due_date = models.DateField(null=True, blank=True)
-    # ... other invoice fields
-    terms = models.TextField(blank=True)
-
-    class Meta:
-        verbose_name = "Invoice"
-        verbose_name_plural = "Invoices"
-
-    def __str__(self):
-        return self.number
-
-    def save(self, *args, **kwargs):
-        if not self.number:
-            self.number = generate_unique_account_number()
-        return super().save(self, args, kwargs)
+    terms = models.TextField(blank=True, verbose_name=_("Terms and Condition"))
+    files = models.FileField(blank=True, upload_to="")

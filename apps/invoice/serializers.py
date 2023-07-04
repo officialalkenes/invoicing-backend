@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Project, ProjectTask, Quote
+from .models import Invoice, Project, ProjectTask, Quote
 
 
 class ProjectTaskSerializer(serializers.ModelSerializer):
@@ -60,3 +60,12 @@ class QuoteCreateSerializer(serializers.ModelSerializer):
             project.tasks.add(ProjectTask.objects.create(**task_data))
         validated_data["project_name"] = project
         return super().create(validated_data)
+
+
+class InvoiceSerializer(serializers.Modelserializer):
+    class Meta:
+        model = Invoice
+        fields = "__all__"
+
+    def create(self, validated_data):
+        ...
