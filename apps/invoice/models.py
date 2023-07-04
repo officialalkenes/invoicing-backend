@@ -7,7 +7,7 @@ from django.db.models.signals import post_save
 from django.utils.translation import gettext_lazy as _
 
 from apps.customers.models import Customer
-from apps.invoice.constants import BILLING_METHOD, FREQUENCY_CHOICES, INVOICE_TYPE
+from apps.invoice.constants import BILLING_METHOD, FREQUENCY_CHOICES, ITEM_TYPES
 
 from .utils import generate_unique_account_number
 
@@ -25,9 +25,10 @@ class Invoice(models.Model):
     invoice_date = models.DateField(verbose_name=_("Invoice Date"))
     subject = models.CharField(max_length=100, verbose_name=_("Subject"))
     due_date = models.DateField(verbose_name=_("Due Date"), blank=True, null=True)
-    invoice_type = models.CharField(
-        max_length=20, verbose_name=_("Invoice Type"), choices=INVOICE_TYPE
-    )
+    # payment_terms = models.CharField(
+    #     max_length=20, blank=True
+    # )
+
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(
         max_length=20,
@@ -56,6 +57,14 @@ class Invoice(models.Model):
             self.inv_number = generate_unique_account_number()
         return super().save(self, args, kwargs)
 
+    @classmethod
+    def calculate_invoice_item_total(cls, user):
+        total = 0
+        invoices = cls.objects.filter(user=user)
+        for invoice in invoices:
+            total += invoice.total_amount
+        return total
+
 
 @receiver(post_save, sender=Invoice)
 def user_post_save(sender, instance, created, **kwargs):
@@ -67,16 +76,30 @@ def user_post_save(sender, instance, created, **kwargs):
         instance.save()
 
 
+class Item(models.Model):
+    item_type = models.CharField(max_length=20, choices=ITEM_TYPES)
+    name = models.CharField(max_length=100, verbose_name=_("Item Name"))
+    units = models.PositiveIntegerField()
+    selling_price = models.DecimalField(decimal_places=2, max_digits=10)
+    description = models.TextField(blank=True)
+
+    def __str__(self) -> str:
+        return f"{self.item_type} - {self.name}"
+
+
 class InvoiceItem(models.Model):
-    invoice = models.ForeignKey(
-        Invoice, on_delete=models.CASCADE, related_name="item_invoice"
+    item = models.ForeignKey(
+        Item, on_delete=models.CASCADE, related_name="item_invoice"
     )
     description = models.CharField(max_length=200)
     quantity = models.PositiveIntegerField()
     unit_price = models.DecimalField(max_digits=10, decimal_places=2)
-    tax_rate = models.DecimalField(max_digits=5, decimal_places=2)
     discount = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, blank=True
+    )
+    tax = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    discount_rate = models.DecimalField(
+        max_digits=3, decimal_places=2, null=True, blank=True
     )
     total = models.DecimalField(max_digits=12, decimal_places=2, editable=False)
     terms = models.TextField(blank=True)
@@ -86,6 +109,7 @@ class InvoiceItem(models.Model):
         subtotal = self.quantity * self.unit_price
         if self.discount:
             subtotal -= self.discount
+
         tax = subtotal * (self.tax_rate / 100)
         self.total = subtotal + tax
 
@@ -101,12 +125,15 @@ class Recurring(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name=_("user_recurring")
     )
-    invoice = models.ForeignKey(
-        "Invoice", on_delete=models.CASCADE, related_name=_("invoice_recurring")
+    client = models.ForeignKey(
+        Customer, on_delete=models.CASCADE, related_name=_("invoice_recurring")
     )
+    items = models.ManyToManyField(InvoiceItem)
+    order_number = models.CharField(max_length=20)
     frequency = models.CharField(max_length=2, choices=FREQUENCY_CHOICES)
     start_date = models.DateField()
     end_date = models.DateField()
+    forever = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f"{self.invoice.number}"

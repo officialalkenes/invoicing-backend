@@ -9,10 +9,13 @@ FREQUENCY_CHOICES = [
     ("Y", "Yearly"),
 ]
 
-ONCE = "Once"
-RECURRING = "Recurring"
+GOODS = "Goods"
+SERVICES = "Services"
 
-INVOICE_TYPE = ((ONCE, "Once"), (RECURRING, "Recurring"))
+ITEM_TYPES = (
+    (GOODS, "Goods"),
+    (SERVICES, "Services"),
+)
 
 
 FIXED = "Fixed Cost"
