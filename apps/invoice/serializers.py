@@ -1,4 +1,7 @@
 from rest_framework import serializers
+from apps.customers.serializers import CustomerSerializer
+
+from apps.user.serializers import UserSerializer
 from .models import Invoice, Project, ProjectTask, Quote
 
 
@@ -63,9 +66,15 @@ class QuoteCreateSerializer(serializers.ModelSerializer):
 
 
 class InvoiceSerializer(serializers.Modelserializer):
+    user = UserSerializer()
+    client = CustomerSerializer()
+
     class Meta:
         model = Invoice
-        fields = "__all__"
+        fields = (
+            "user",
+            "client",
+        )
 
     def create(self, validated_data):
         ...
