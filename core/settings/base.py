@@ -41,9 +41,9 @@ CUSTOM_APPS = [
     # "apps.profiles",
     "apps.invoice",
     "apps.profiles",
+    "apps.records",
     "apps.user",
 ]
-
 
 THIRDPARTY_APPS = [
     # "anymail",

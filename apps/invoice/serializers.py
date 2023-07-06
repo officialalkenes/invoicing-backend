@@ -65,7 +65,7 @@ class QuoteCreateSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
-class InvoiceSerializer(serializers.Modelserializer):
+class InvoiceSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     client = CustomerSerializer()
 
