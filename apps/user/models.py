@@ -26,16 +26,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name=_("Email Address"),
         help_text=_("Provide a Valid Email Address"),
     )
+    full_name = models.CharField(max_length=125, verbose_name=_("FullName"))
+    company_name = models.CharField(max_length=100, verbose_name=_("Name of Company"))
     country = CountryField()
+    state = models.CharField(max_length=70, verbose_name=_("Select State"))
     is_staff = models.BooleanField(
         _("staff status"),
         default=False,
         help_text=_(
             "Designates whether the user can has teacher's/staff's Priviledges."
         ),
-    )
-    member_type = models.CharField(
-        max_length=100, verbose_name=_("PLATFORM ROLE"), choices=MEMBER_TYPE, blank=True
     )
     is_owner = models.BooleanField(
         default=False,
@@ -58,46 +58,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         default=False,
         help_text=_("Designates whether this user's email has been Verified. "),
     )
-
     on_boarding_complete = models.BooleanField(
         verbose_name=_("Completed Onboarding"),
         default=False,
         help_text=_("Flag to determine if customer has completed onboarding process."),
     )
-
-    on_boarding_complete_date = models.DateTimeField(
-        verbose_name=_("Onboarding Complete Date"),
-        blank=True,
-        null=True,
-        help_text=_("Timestamp when customer completed onboarding process."),
-    )
-
-    kyc_submitted = models.BooleanField(
-        verbose_name=_("KYC Submitted"),
-        default=False,
-        help_text=_("Flag to determine if customer has submitted a KYC Verification."),
-    )
-
-    social_security_number = models.CharField(
-        verbose_name=_("Social Security Number"),
-        max_length=50,
-        blank=True,
-        null=True,
-        help_text=_(
-            "The social security number of the customer. This helps to determine the credit score and also validates the identity of the customer."
-        ),
-    )
-
-    place_of_birth = models.CharField(
-        max_length=150,
-        verbose_name=_("Place of Birth"),
-        blank=True,
-        null=True,
-        help_text=_(
-            "The place of birth of the customer. This must match the place of birth as indicated in the customers photo Identitication."
-        ),
-    )
-
     verification_date = models.DateTimeField(
         default=timezone.now,
         verbose_name=_("Verification Date"),
