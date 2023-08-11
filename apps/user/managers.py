@@ -27,8 +27,6 @@ class UserManager(BaseUserManager):
 
         Args:
             email (email): Email Address
-            username (str): Unique Username
-            fullname (str): first and last name
             password (hash): password
 
         Raises:

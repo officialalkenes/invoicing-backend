@@ -18,9 +18,11 @@ from django_countries.fields import CountryField
 
 from .constants import MEMBER_TYPE
 from .managers import UserManager
+from .utils import generate_unique_user_id
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    user_id = models.CharField(max_length=100, blank=True)
     email = models.EmailField(
         unique=True,
         verbose_name=_("Email Address"),
@@ -102,6 +104,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     #     return reverse("model_detail", kwargs={"pk": self.pk})
 
     def save(self, *args, **kwargs):
+        if not self.user_id:
+            self.user_id = generate_unique_user_id()
         super().save(*args, **kwargs)
 
 
