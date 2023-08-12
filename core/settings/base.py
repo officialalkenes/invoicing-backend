@@ -18,7 +18,6 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG", cast=bool)
 
-
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -47,13 +46,15 @@ CUSTOM_APPS = [
 
 THIRDPARTY_APPS = [
     # "anymail",
+    "django_extensions",
     "corsheaders",
-    "django_celery_results",
+    # "django_celery_results",
     "djoser",
     "phonenumber_field",
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_simplejwt.token_blacklist",
+    "drf_yasg",
     # 'django_countries',
     # 'django_extensions',
     # 'cloudinary_storage',
@@ -180,7 +181,7 @@ REST_FRAMEWORK = {
         # "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+        "rest_framework.permissions.AllowAny",
     ],
 }
 
