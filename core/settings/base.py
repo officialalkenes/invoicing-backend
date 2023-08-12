@@ -39,6 +39,7 @@ CUSTOM_APPS = [
     # "apps.fintech_app",
     # "apps.profiles",
     "apps.invoice",
+    "apps.subscriptions",
     "apps.profiles",
     "apps.records",
     "apps.user",

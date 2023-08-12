@@ -6,6 +6,8 @@ from django_countries.fields import CountryField
 
 from .constants import CURRENCY_TYPE, CUSTOMER_TYPE, SALUTATION_TYPE
 
+from apps.subscriptions.models import SubscriptionPlan
+
 
 class Customer(models.Model):
     customer_type = models.CharField(
@@ -23,6 +25,9 @@ class Customer(models.Model):
     email = models.EmailField()
     personal_phone = models.CharField(max_length=11, verbose_name=_("Personal Phone"))
     work_phone = models.CharField(max_length=11, verbose_name=_("Work Phone"))
+    subscription_plan = models.ForeignKey(
+        SubscriptionPlan, on_delete=models.SET_NULL, null=True
+    )
 
     def __str__(self) -> str:
         return f"{self.customer_type}"

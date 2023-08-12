@@ -33,7 +33,7 @@ class OrganizationProfile(models.Model):
     org_id = models.CharField(
         primary_key=True, max_length=10, default=generate_unique_id, editable=False
     )
-    organization = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    organization = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     organization_name = models.CharField(
         max_length=100, verbose_name=_("Organization Name")
     )
