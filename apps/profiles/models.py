@@ -18,22 +18,12 @@ class UserProfile(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name="user_profile"
     )
-    organization_name = models.CharField(
-        max_length=100, verbose_name=_("Organization Name")
-    )
-    location = CountryField()
-    state = models.CharField(
-        max_length=100, verbose_name=_("State/Province"), blank=True
-    )
-    logo = models.ImageField(
-        upload_to=user_directory_path, blank=True, verbose_name=_("Organization Logo")
-    )
     city = models.CharField(max_length=100, verbose_name=_("City"), blank=True)
     address = models.CharField(
         max_length=100, blank=True, verbose_name=_("Business Address")
     )
     phone_number = models.CharField(max_length=100)
-    website = models.CharField(max_length=100)
+    is_onboarded = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f"{self.user}"
@@ -44,8 +34,19 @@ class OrganizationProfile(models.Model):
         primary_key=True, max_length=10, default=generate_unique_id, editable=False
     )
     organization = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
+    organization_name = models.CharField(
+        max_length=100, verbose_name=_("Organization Name")
+    )
+    website = models.CharField(max_length=100)
     industry = models.CharField(max_length=100, choices=INDUSTRY_TYPE)
     business = models.CharField(max_length=100, choices=BUSINESS_TYPE)
+    location = CountryField()
+    state = models.CharField(
+        max_length=100, verbose_name=_("State/Province"), blank=True
+    )
+    logo = models.ImageField(
+        upload_to=user_directory_path, blank=True, verbose_name=_("Organization Logo")
+    )
     base_currency = models.CharField(max_length=30, choices=CURRENCY_CHOICE, blank=True)
 
     def __str__(self) -> str:

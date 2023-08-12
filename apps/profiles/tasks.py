@@ -1,8 +1,10 @@
-from celery import shared_task
-
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.shortcuts import redirect
+
+from celery import shared_task
+from PIL import Image
+from .models import UserProfile, OrganizationProfile
 
 
 @shared_task
@@ -34,3 +36,24 @@ def track_email(request, token):
 
     # Redirect the user to a specific page or display a message
     return redirect("confirmation_page")
+
+
+@shared_task
+def onboard_user(user_id):
+    user_profile = UserProfile.objects.get(user_id=user_id)
+    user_profile.is_onboarded = True
+    user_profile.save()
+
+
+@shared_task
+def process_logo(organization_profile_id):
+    org_profile = OrganizationProfile.objects.get(id=organization_profile_id)
+
+    if org_profile.logo:
+        image = Image.open(org_profile.logo.path)
+        # Perform any image processing using PIL here
+        # For example, resizing the image
+        resized_image = image.resize((100, 100), Image.ANTIALIAS)
+
+        # Save the processed image back
+        resized_image.save(org_profile.logo.path)

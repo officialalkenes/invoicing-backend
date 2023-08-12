@@ -138,6 +138,816 @@ paths:
           description: ''
       tags:
       - api
+  /api/v1/invoiceinvoices/:
+    get:
+      operationId: listInvoices
+      description: List all invoices or create a new invoice.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Invoice'
+          description: ''
+      tags:
+      - api
+    post:
+      operationId: createInvoice
+      description: List all invoices or create a new invoice.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+          description: ''
+      tags:
+      - api
+  /api/v1/invoiceinvoices/{id}/:
+    get:
+      operationId: retrieveInvoice
+      description: Retrieve, update, or delete an invoice instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this Invoice.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+          description: ''
+      tags:
+      - api
+    put:
+      operationId: updateInvoice
+      description: Retrieve, update, or delete an invoice instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this Invoice.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+          description: ''
+      tags:
+      - api
+    patch:
+      operationId: partialUpdateInvoice
+      description: Retrieve, update, or delete an invoice instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this Invoice.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Invoice'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+          description: ''
+      tags:
+      - api
+    delete:
+      operationId: destroyInvoice
+      description: Retrieve, update, or delete an invoice instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this Invoice.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - api
+  /api/v1/invoiceitems/:
+    get:
+      operationId: listItems
+      description: List all items or create a new item.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+          description: ''
+      tags:
+      - api
+    post:
+      operationId: createItem
+      description: List all items or create a new item.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Item'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+      tags:
+      - api
+  /api/v1/invoiceitems/{id}/:
+    get:
+      operationId: retrieveItem
+      description: Retrieve, update, or delete an item instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this item.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+      tags:
+      - api
+    put:
+      operationId: updateItem
+      description: Retrieve, update, or delete an item instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this item.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Item'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+      tags:
+      - api
+    patch:
+      operationId: partialUpdateItem
+      description: Retrieve, update, or delete an item instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this item.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Item'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Item'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Item'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: ''
+      tags:
+      - api
+    delete:
+      operationId: destroyItem
+      description: Retrieve, update, or delete an item instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this item.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - api
+  /api/v1/invoicerecurring/:
+    get:
+      operationId: listRecurrings
+      description: List all recurring invoices or create a new recurring invoice.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recurring'
+          description: ''
+      tags:
+      - api
+    post:
+      operationId: createRecurring
+      description: List all recurring invoices or create a new recurring invoice.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recurring'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Recurring'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Recurring'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recurring'
+          description: ''
+      tags:
+      - api
+  /api/v1/invoicerecurring/{id}/:
+    get:
+      operationId: retrieveRecurring
+      description: Retrieve, update, or delete a recurring invoice instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this recurring.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recurring'
+          description: ''
+      tags:
+      - api
+    put:
+      operationId: updateRecurring
+      description: Retrieve, update, or delete a recurring invoice instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this recurring.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recurring'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Recurring'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Recurring'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recurring'
+          description: ''
+      tags:
+      - api
+    patch:
+      operationId: partialUpdateRecurring
+      description: Retrieve, update, or delete a recurring invoice instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this recurring.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Recurring'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Recurring'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Recurring'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recurring'
+          description: ''
+      tags:
+      - api
+    delete:
+      operationId: destroyRecurring
+      description: Retrieve, update, or delete a recurring invoice instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this recurring.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - api
+  /api/v1/invoiceprojects/:
+    get:
+      operationId: listProjects
+      description: List all projects or create a new project.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Project'
+          description: ''
+      tags:
+      - api
+    post:
+      operationId: createProject
+      description: List all projects or create a new project.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Project'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+      tags:
+      - api
+  /api/v1/invoiceprojects/{id}/:
+    get:
+      operationId: retrieveProject
+      description: Retrieve, update, or delete a project instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this project.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+      tags:
+      - api
+    put:
+      operationId: updateProject
+      description: Retrieve, update, or delete a project instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this project.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Project'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+      tags:
+      - api
+    patch:
+      operationId: partialUpdateProject
+      description: Retrieve, update, or delete a project instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this project.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Project'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Project'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+          description: ''
+      tags:
+      - api
+    delete:
+      operationId: destroyProject
+      description: Retrieve, update, or delete a project instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this project.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - api
+  /api/v1/invoiceproject-tasks/:
+    get:
+      operationId: listProjectTasks
+      description: List all project tasks or create a new project task.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectTask'
+          description: ''
+      tags:
+      - api
+    post:
+      operationId: createProjectTask
+      description: List all project tasks or create a new project task.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectTask'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProjectTask'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProjectTask'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectTask'
+          description: ''
+      tags:
+      - api
+  /api/v1/invoiceproject-tasks/{id}/:
+    get:
+      operationId: retrieveProjectTask
+      description: Retrieve, update, or delete a project task instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this project task.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectTask'
+          description: ''
+      tags:
+      - api
+    put:
+      operationId: updateProjectTask
+      description: Retrieve, update, or delete a project task instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this project task.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectTask'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProjectTask'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProjectTask'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectTask'
+          description: ''
+      tags:
+      - api
+    patch:
+      operationId: partialUpdateProjectTask
+      description: Retrieve, update, or delete a project task instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this project task.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectTask'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProjectTask'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProjectTask'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectTask'
+          description: ''
+      tags:
+      - api
+    delete:
+      operationId: destroyProjectTask
+      description: Retrieve, update, or delete a project task instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this project task.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - api
+  /api/v1/invoicequotes/:
+    get:
+      operationId: listQuotes
+      description: List all quotes or create a new quote.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Quote'
+          description: ''
+      tags:
+      - api
+    post:
+      operationId: createQuote
+      description: List all quotes or create a new quote.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quote'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Quote'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Quote'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+          description: ''
+      tags:
+      - api
+  /api/v1/invoicequotes/{id}/:
+    get:
+      operationId: retrieveQuote
+      description: Retrieve, update, or delete a quote instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this quote.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+          description: ''
+      tags:
+      - api
+    put:
+      operationId: updateQuote
+      description: Retrieve, update, or delete a quote instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this quote.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quote'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Quote'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Quote'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+          description: ''
+      tags:
+      - api
+    patch:
+      operationId: partialUpdateQuote
+      description: Retrieve, update, or delete a quote instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this quote.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Quote'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Quote'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Quote'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Quote'
+          description: ''
+      tags:
+      - api
+    delete:
+      operationId: destroyQuote
+      description: Retrieve, update, or delete a quote instance.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this quote.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - api
   /api/v1/records:
     get:
       operationId: listSortedDepositRecords
@@ -1330,6 +2140,291 @@ components:
       - email
       - personal_phone
       - work_phone
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        invoice_items:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                readOnly: true
+              description:
+                type: string
+                maxLength: 200
+              quantity:
+                type: integer
+              unit_price:
+                type: string
+                format: decimal
+                multipleOf: 0.01
+                maximum: 100000000
+                minimum: -100000000
+              discount:
+                type: string
+                format: decimal
+                multipleOf: 0.01
+                maximum: 100000000
+                minimum: -100000000
+                nullable: true
+              tax:
+                type: string
+                format: decimal
+                multipleOf: 0.01
+                maximum: 100000000
+                minimum: -100000000
+              discount_rate:
+                type: string
+                format: decimal
+                multipleOf: 0.01
+                maximum: 10
+                minimum: -10
+                nullable: true
+              total:
+                type: string
+                format: decimal
+                multipleOf: 0.01
+                maximum: 10000000000
+                minimum: -10000000000
+                readOnly: true
+              terms:
+                type: string
+              item:
+                type: integer
+            required:
+            - description
+            - quantity
+            - unit_price
+            - item
+        inv_number:
+          type: string
+          maxLength: 20
+        invoice_date:
+          type: string
+          format: date
+        subject:
+          type: string
+          maxLength: 100
+        due_date:
+          type: string
+          format: date
+          nullable: true
+        total_amount:
+          type: string
+          format: decimal
+          multipleOf: 0.01
+          maximum: 100000000
+          minimum: -100000000
+        status:
+          enum:
+          - draft
+          - sent
+          - paid
+          - cancelled
+          type: string
+        terms:
+          type: string
+        has_paid:
+          type: boolean
+        is_sent:
+          type: boolean
+        user:
+          type: string
+          readOnly: true
+        client:
+          type: integer
+      required:
+      - invoice_date
+      - subject
+      - total_amount
+      - client
+    Item:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        item_type:
+          enum:
+          - Goods
+          - Services
+          type: string
+        name:
+          type: string
+          maxLength: 100
+        units:
+          type: integer
+        selling_price:
+          type: string
+          format: decimal
+          multipleOf: 0.01
+          maximum: 100000000
+          minimum: -100000000
+        description:
+          type: string
+      required:
+      - item_type
+      - name
+      - units
+      - selling_price
+    Recurring:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        order_number:
+          type: string
+          maxLength: 20
+        frequency:
+          enum:
+          - W
+          - BW
+          - M
+          - Q
+          - HY
+          - Y
+          type: string
+        start_date:
+          type: string
+          format: date
+        end_date:
+          type: string
+          format: date
+        forever:
+          type: boolean
+        user:
+          type: string
+          readOnly: true
+        client:
+          type: integer
+        items:
+          type: array
+          items:
+            type: integer
+      required:
+      - order_number
+      - frequency
+      - start_date
+      - end_date
+      - client
+      - items
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        tasks:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                readOnly: true
+              task_name:
+                type: string
+                maxLength: 100
+              description:
+                type: string
+              project:
+                type: array
+                items:
+                  type: integer
+            required:
+            - task_name
+            - description
+            - project
+        project_name:
+          type: string
+          maxLength: 100
+        project_code:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        billing_method:
+          enum:
+          - Fixed Cost
+          - Based on Project Hours
+          - Based on Task Hours
+          - Based on Staff Hours
+          type: string
+        total_cost:
+          type: string
+          format: decimal
+          multipleOf: 0.01
+          maximum: 10000000000
+          minimum: -10000000000
+        user:
+          type: string
+          readOnly: true
+      required:
+      - project_name
+      - project_code
+      - description
+      - billing_method
+      - total_cost
+    ProjectTask:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        task_name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        project:
+          type: array
+          items:
+            type: integer
+      required:
+      - task_name
+      - description
+      - project
+    Quote:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        quote_id:
+          type: string
+          maxLength: 20
+        quote_date:
+          type: string
+          format: date
+        expiration_date:
+          type: string
+          format: date
+        subject:
+          type: string
+          maxLength: 200
+        terms:
+          type: string
+        files:
+          type: string
+          format: binary
+        user:
+          type: string
+          readOnly: true
+        client:
+          type: integer
+        project_name:
+          type: integer
+      required:
+      - quote_date
+      - expiration_date
+      - client
+      - project_name
     User:
       type: object
       properties:
