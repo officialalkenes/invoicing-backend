@@ -1,8 +1,49 @@
 from rest_framework import serializers
-from apps.customers.serializers import CustomerSerializer
+from .models import (
+    Invoice,
+    Item,
+    InvoiceItem,
+    Recurring,
+    Project,
+    ProjectTask,
+    Quote,
+)
 
-from apps.user.serializers import UserSerializer
-from .models import Invoice, Project, ProjectTask, Quote
+
+class InvoiceItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = InvoiceItem
+        fields = "__all__"
+
+
+class InvoiceSerializer(serializers.ModelSerializer):
+    invoice_items = InvoiceItemSerializer(many=True, required=False)
+
+    class Meta:
+        model = Invoice
+        fields = "__all__"
+        read_only_fields = ("user",)
+
+    def create(self, validated_data):
+        user = self.context["request"].user
+        invoice_items_data = validated_data.pop("invoice_items", [])
+        invoice = Invoice.objects.create(user=user, **validated_data)
+        for item_data in invoice_items_data:
+            InvoiceItem.objects.create(invoice=invoice, **item_data)
+        return invoice
+
+
+class ItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Item
+        fields = "__all__"
+
+
+class RecurringSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recurring
+        fields = "__all__"
+        read_only_fields = ("user",)
 
 
 class ProjectTaskSerializer(serializers.ModelSerializer):
@@ -12,69 +53,24 @@ class ProjectTaskSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-    tasks = ProjectTaskSerializer(many=True)
+    tasks = ProjectTaskSerializer(many=True, required=False)
 
     class Meta:
         model = Project
         fields = "__all__"
-
-
-class QuoteSerializer(serializers.ModelSerializer):
-    project_name = ProjectSerializer()
-
-    class Meta:
-        model = Quote
-        fields = "__all__"
-
-
-class ProjectTaskCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProjectTask
-        fields = "__all__"
-
-
-class ProjectCreateSerializer(serializers.ModelSerializer):
-    tasks = ProjectTaskCreateSerializer(many=True)
-
-    class Meta:
-        model = Project
-        fields = "__all__"
+        read_only_fields = ("user",)
 
     def create(self, validated_data):
+        user = self.context["request"].user
         tasks_data = validated_data.pop("tasks", [])
-        project = Project.objects.create(**validated_data)
+        project = Project.objects.create(user=user, **validated_data)
         for task_data in tasks_data:
-            project.tasks.add(ProjectTask.objects.create(**task_data))
+            ProjectTask.objects.create(project=project, **task_data)
         return project
 
 
-class QuoteCreateSerializer(serializers.ModelSerializer):
-    project_name = ProjectCreateSerializer()
-
+class QuoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quote
         fields = "__all__"
-
-    def create(self, validated_data):
-        project_data = validated_data.pop("project_name", {})
-        tasks_data = project_data.pop("tasks", [])
-        project = Project.objects.create(**project_data)
-        for task_data in tasks_data:
-            project.tasks.add(ProjectTask.objects.create(**task_data))
-        validated_data["project_name"] = project
-        return super().create(validated_data)
-
-
-class InvoiceSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    client = CustomerSerializer()
-
-    class Meta:
-        model = Invoice
-        fields = (
-            "user",
-            "client",
-        )
-
-    def create(self, validated_data):
-        ...
+        read_only_fields = ("user",)

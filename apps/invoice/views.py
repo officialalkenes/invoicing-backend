@@ -1,111 +1,159 @@
 from rest_framework import generics
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
+from drf_yasg.utils import swagger_auto_schema
 
-from .models import Project, ProjectTask, Quote
+from .models import (
+    Invoice,
+    Item,
+    InvoiceItem,
+    Recurring,
+    Project,
+    ProjectTask,
+    Quote,
+)
+
 from .serializers import (
+    InvoiceSerializer,
+    ItemSerializer,
+    InvoiceItemSerializer,
+    RecurringSerializer,
     ProjectSerializer,
     ProjectTaskSerializer,
     QuoteSerializer,
-    ProjectCreateSerializer,
-    QuoteCreateSerializer,
 )
+from .permissions import IsOwnerOrReadOnly  # Import the custom permission
 
 
-class ProjectListAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
+class InvoiceListCreateView(generics.ListCreateAPIView):
+    """
+    List all invoices or create a new invoice.
+    """
+
+    queryset = Invoice.objects.all()
+    serializer_class = InvoiceSerializer
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        projects = Project.objects.all()
-        serializer = ProjectSerializer(projects, many=True)
-        return Response(serializer.data)
-
-    def post(self, request):
-        serializer = ProjectCreateSerializer(data=request.data)
-        if serializer.is_valid():
-            project = serializer.save()
-            return Response(ProjectSerializer(project).data, status=201)
-        return Response(serializer.errors, status=400)
+    @swagger_auto_schema(tags=["Invoices"])
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
-class ProjectDetailAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
+class InvoiceRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update, or delete an invoice instance.
+    """
+
+    queryset = Invoice.objects.all()
+    serializer_class = InvoiceSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+
+
+class ItemListCreateView(generics.ListCreateAPIView):
+    """
+    List all items or create a new item.
+    """
+
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, pk):
-        project = generics.get_object_or_404(Project, pk=pk)
-        serializer = ProjectSerializer(project)
-        return Response(serializer.data)
 
-    def put(self, request, pk):
-        project = generics.get_object_or_404(Project, pk=pk)
-        serializer = ProjectCreateSerializer(project, data=request.data)
-        if serializer.is_valid():
-            project = serializer.save()
-            return Response(ProjectSerializer(project).data)
-        return Response(serializer.errors, status=400)
+class ItemRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update, or delete an item instance.
+    """
 
-    def delete(self, request, pk):
-        project = generics.get_object_or_404(Project, pk=pk)
-        project.delete()
-        return Response(status=204)
-
-
-class ProjectTaskListAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        tasks = ProjectTask.objects.all()
-        serializer = ProjectTaskSerializer(tasks, many=True)
-        return Response(serializer.data)
 
-    def post(self, request):
-        serializer = ProjectTaskSerializer(data=request.data)
-        if serializer.is_valid():
-            task = serializer.save()
-            return Response(ProjectTaskSerializer(task).data, status=201)
-        return Response(serializer.errors, status=400)
+# Create similar views for other models
 
 
-class QuoteListAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
+class QuoteListCreateView(generics.ListCreateAPIView):
+    """
+    List all quotes or create a new quote.
+    """
+
+    queryset = Quote.objects.all()
+    serializer_class = QuoteSerializer
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
-        quotes = Quote.objects.all()
-        serializer = QuoteSerializer(quotes, many=True)
-        return Response(serializer.data)
 
-    def post(self, request):
-        serializer = QuoteCreateSerializer(data=request.data)
-        if serializer.is_valid():
-            quote = serializer.save()
-            return Response(QuoteSerializer(quote).data, status=201)
-        return Response(serializer.errors, status=400)
+class QuoteRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update, or delete a quote instance.
+    """
+
+    queryset = Quote.objects.all()
+    serializer_class = QuoteSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
 
 
-class QuoteDetailAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
+class RecurringListCreateView(generics.ListCreateAPIView):
+    """
+    List all recurring invoices or create a new recurring invoice.
+    """
+
+    queryset = Recurring.objects.all()
+    serializer_class = RecurringSerializer
     permission_classes = [IsAuthenticated]
 
-    def get(self, request, pk):
-        quote = generics.get_object_or_404(Quote, pk=pk)
-        serializer = QuoteSerializer(quote)
-        return Response(serializer.data)
+    @swagger_auto_schema(tags=["Recurring Invoices"])
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
-    def put(self, request, pk):
-        quote = generics.get_object_or_404(Quote, pk=pk)
-        serializer = QuoteCreateSerializer(quote, data=request.data)
-        if serializer.is_valid():
-            quote = serializer.save()
-            return Response(QuoteSerializer(quote).data)
-        return Response(serializer.errors, status=400)
 
-    def delete(self, request, pk):
-        quote = generics.get_object_or_404(Quote, pk=pk)
-        quote.delete()
-        return Response(status=204)
+class RecurringRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update, or delete a recurring invoice instance.
+    """
+
+    queryset = Recurring.objects.all()
+    serializer_class = RecurringSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+
+
+class ProjectListCreateView(generics.ListCreateAPIView):
+    """
+    List all projects or create a new project.
+    """
+
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+    permission_classes = [IsAuthenticated]
+
+    @swagger_auto_schema(tags=["Projects"])
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+class ProjectRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update, or delete a project instance.
+    """
+
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+
+
+class ProjectTaskListCreateView(generics.ListCreateAPIView):
+    """
+    List all project tasks or create a new project task.
+    """
+
+    queryset = ProjectTask.objects.all()
+    serializer_class = ProjectTaskSerializer
+    permission_classes = [IsAuthenticated]
+
+
+class ProjectTaskRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve, update, or delete a project task instance.
+    """
+
+    queryset = ProjectTask.objects.all()
+    serializer_class = ProjectTaskSerializer
+    permission_classes = [IsAuthenticated]
