@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import include, path, re_path
 
+# from rest_framework.documentation import include_docs_urls
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -23,9 +24,11 @@ urlpatterns = [
         schema_view.without_ui(cache_timeout=0),
         name="schema-json",
     ),
+    # path('api/docs/', include_docs_urls(title='Invoice API Documentation')),  # Custom API documentation
     path("", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
     path("api/v1/", include("apps.user.urls", namespace="accounts")),
+    path("api/v1/customers", include("apps.customers.urls", namespace="customers")),
     path("api/v1/records", include("apps.records.urls", namespace="records")),
     path("admin/", admin.site.urls),
     path("api/v1/token/", TokenObtainPairView.as_view(), name="token_obtain_pair_view"),
