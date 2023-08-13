@@ -6,10 +6,10 @@ from django.db.models.signals import post_save
 
 from django.utils.translation import gettext_lazy as _
 
+from apps.profiles.utils import generate_unique_account_number
 from apps.customers.models import Customer
 from apps.invoice.constants import BILLING_METHOD, FREQUENCY_CHOICES, ITEM_TYPES
 
-from .utils import generate_unique_account_number
 
 User = get_user_model()
 

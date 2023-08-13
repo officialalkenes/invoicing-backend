@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-
-from apps.customers.models import Customer
+from apps.customers.models import Customer  # Import here
 
 
 class SubscriptionPlan(models.Model):

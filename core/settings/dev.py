@@ -45,3 +45,8 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels.layers.InMemoryChannelLayer",
     }
 }
+
+# Paypal
+PAYPAL_CLIENT_ID = "your-paypal-client-id"
+PAYPAL_CLIENT_SECRET = "your-paypal-client-secret"
+PAYPAL_MODE = "sandbox"  # Use 'live' for production
