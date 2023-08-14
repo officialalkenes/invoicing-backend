@@ -1,35 +1,51 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
-from apps.customers.models import Customer
+from datetime import datetime, timedelta
+
 from apps.profiles.models import UserProfile
-from apps.subscriptions.constants import OCURRENCE_CHOICES  # Import here
+from apps.subscriptions.constants import OCURRENCE_CHOICES, PAYMENT_METHOD_CHOICES
 
 
 class SubscriptionPlan(models.Model):
     name = models.CharField(max_length=100, verbose_name=_("Plan Name"))
-    price = models.DecimalField(
-        max_digits=10, decimal_places=2, verbose_name=_("Price")
+    price_monthly = models.DecimalField(
+        max_digits=10, decimal_places=2, verbose_name=_("Monthly Price")
+    )
+    price_yearly = models.DecimalField(
+        max_digits=10, decimal_places=2, verbose_name=_("Yearly Price")
     )
     features = models.TextField(verbose_name=_("Features"))
-    start_date = models.DateField(verbose_name=_("Start Date"), blank=True)
-    end_date = models.DateField(verbose_name=_("End Date"), blank=True)
 
     def __str__(self):
         return self.name
 
 
 class Subscription(models.Model):
-    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user = models.OneToOneField(UserProfile, on_delete=models.CASCADE)
     plan = models.ForeignKey(SubscriptionPlan, on_delete=models.CASCADE)
-    ocurrence = models.CharField(
-        max_length=100, verbose_name=_("Occurence"), choices=OCURRENCE_CHOICES
+    payment_schedule = models.CharField(
+        max_length=10,
+        choices=OCURRENCE_CHOICES,
+        default="monthly",
     )
-    auto_charge = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"{self.owner} - {self.plan} ({self.start_date} to {self.end_date})"
+    payment_method = models.CharField(
+        max_length=10,
+        choices=PAYMENT_METHOD_CHOICES,
+        default="paypal",
+        verbose_name=_("Payment Method"),
+    )
+    start_date = models.DateField(verbose_name=_("Start Date"))
+    end_date = models.DateField(verbose_name=_("End Date"))
 
     def save(self, *args, **kwargs):
-        # if self.ocurrence.lower() == "monthly":
-        #     start_date
-        return super().save(args, kwargs)
+        if self.payment_schedule == "monthly":
+            self.start_date = datetime.now().date()
+            self.end_date = self.start_date + timedelta(days=30)
+        elif self.payment_schedule == "yearly":
+            self.start_date = datetime.now().date()
+            self.end_date = self.start_date + timedelta(days=365)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.user} - {self.plan} ({self.payment_schedule})"

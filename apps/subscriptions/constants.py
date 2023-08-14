@@ -1,7 +1,4 @@
-OCURRENCE_CHOICES = (
-    ("Once", "Once"),
-    ("Continious", "Continious"),
-)
+OCURRENCE_CHOICES = (("monthly", "Monthly"), ("yearly", "Yearly"))
 
 PAYMENT_METHOD_CHOICES = [
     ("paypal", "PayPal"),

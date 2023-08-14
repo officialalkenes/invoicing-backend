@@ -1,3 +1,4 @@
+import requests
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.shortcuts import redirect
@@ -57,3 +58,17 @@ def process_logo(organization_profile_id):
 
         # Save the processed image back
         resized_image.save(org_profile.logo.path)
+
+
+@shared_task
+def create_paystack_subaccount(self, user_profile):
+    url = "https://api.paystack.co/subaccount"
+    payload = {
+        "business_name": user_profile.organization_name,
+        "settlement_bank": "Zenith Bank",  # Example bank name
+        "account_number": "0123456789",  # Example account number
+        # Add other required fields here
+    }
+    headers = {"Authorization": "Bearer YOUR_PAYSTACK_SECRET_KEY"}
+    response = requests.post(url, json=payload, headers=headers)
+    return response
