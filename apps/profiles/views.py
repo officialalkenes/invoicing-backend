@@ -7,8 +7,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from .models import UserProfile, OrganizationProfile
 from .serializers import UserProfileSerializer, OrganizationProfileSerializer
-from apps.customer.models import Customer
-from apps.subscription.models import Subscription, SubscriptionPlan
+from apps.customers.models import Customer
+from apps.subscriptions.models import Subscription, SubscriptionPlan
 
 
 import paypalrestsdk

@@ -67,6 +67,7 @@ INSTALLED_APPS = DJANGO_APPS + CUSTOM_APPS + THIRDPARTY_APPS
 
 CORS_ALLOWED_ORIGIN = [
     "localhost:3000",
+    # 'myshop.com'
 ]
 
 MIDDLEWARE = [
