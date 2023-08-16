@@ -3,6 +3,51 @@ info:
   title: ''
   version: ''
 paths:
+  /api/v1/profilesuser-profiles/{id}/:
+    get:
+      operationId: retrieveUserProfileDetail
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+    put:
+      operationId: updateUserProfileDetail
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
   /api/v1/customerscustomers/:
     get:
       operationId: listCustomers
@@ -1169,6 +1214,48 @@ paths:
           description: ''
       tags:
       - api
+  /api/v1/profilesuser-profiles/:
+    post:
+      operationId: createUserProfileList
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/v1/profilesorganization-profiles/:
+    post:
+      operationId: createOrganizationProfile
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
   /api/v1/customersbilling-address/:
     post:
       operationId: createCustomerBillingAddress
@@ -2130,6 +2217,9 @@ components:
         work_phone:
           type: string
           maxLength: 11
+        subscription_plan:
+          type: integer
+          nullable: true
       required:
       - billing_address
       - shipping_address
