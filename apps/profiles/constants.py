@@ -32,3 +32,15 @@ CURRENCY_CHOICE = (
     (NGO, _("NGO")),
     (PROFIT_BUSINESS, _("PROFIT_BUSINESS")),
 )
+
+BLUE = "Blue"
+RED = "Red"
+GREEN = "Green"
+PURPLE = "Purple"
+
+COLOR_CHOICE = (
+    (BLUE, _("BLUE")),
+    (RED, _("RED")),
+    (GREEN, _("GREEN")),
+    (PURPLE, _("PURPLE")),
+)

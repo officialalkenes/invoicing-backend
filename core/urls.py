@@ -27,7 +27,7 @@ urlpatterns = [
     # path('api/docs/', include_docs_urls(title='Invoice API Documentation')),  # Custom API documentation
     path("", schema_view.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
-    path("api/v1/", include("apps.user.urls", namespace="accounts")),
+    path("api/v1/account", include("apps.user.urls", namespace="accounts")),
     path("api/v1/profiles", include("apps.profiles.urls", namespace="profiles")),
     path("api/v1/customers", include("apps.customers.urls", namespace="customers")),
     path("api/v1/invoice", include("apps.invoice.urls", namespace="invoice")),

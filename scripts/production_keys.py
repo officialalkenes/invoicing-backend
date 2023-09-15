@@ -1,6 +1,6 @@
 from django.core.management.utils import get_random_secret_key
 
-from invoice.utils.cryptography import generate_key_pair
+from apps.invoice.utils.cryptography import generate_key_pair
 
 
 def generate_account():

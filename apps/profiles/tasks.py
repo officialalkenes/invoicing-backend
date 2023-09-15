@@ -67,7 +67,7 @@ def create_paystack_subaccount(self, user_profile):
         "business_name": user_profile.organization_name,
         "settlement_bank": "Zenith Bank",  # Example bank name
         "account_number": user_profile.account_number,  # Example account number
-        "percentage_charge": 10.2,
+        "percentage_charge": 1.0,
         # Add other required fields here
     }
     headers = {"Authorization": "Bearer YOUR_PAYSTACK_SECRET_KEY"}
